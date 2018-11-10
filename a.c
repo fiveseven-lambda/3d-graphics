@@ -25,7 +25,7 @@ int main(){
 	test.width = 1000;
 
 
-	double o[N] = {500, 400, 300}, p[N] = {-1, -1, -1}, q[N] = {1, -1, 0};
+	double o[N] = {500, 430, 300}, p[N] = {-500, -430, -300}, q[N] = {4.3, -5, 0};
 
 	normalize(p);
 	normalize(q);
@@ -33,27 +33,48 @@ int main(){
 	double r[N] = {p[1] * q[2] - p[2] * q[1], p[2] * q[0] - p[0] * q[2], p[0] * q[1] - p[1] * q[0]};
 
 	double a[N];
-	for(int i = 0; i < 1 << N; ++i){
-		for(int j = 0; j < N; ++j){
-			a[j] = ((i >> j) & 1 ? -100 : 100);
-		}
-		for(int j = 0; j < N; ++j){
-			printf("%f ", a[j]);
-		}
-		putchar('\n');
-		
-		for(int j = 0; j < N; ++j) a[j] -= o[j];
-		double x, y;
-		x = inner_product(a, q) / inner_product(a, p);
-		y = inner_product(a, r) / inner_product(a, p);
 
+	for(int i = -2; i < 2; ++i) for(int j = -2; j < 2; ++j) for(int k = -2; k < 2; ++k){
+		a[0] = i * 100;
+		a[1] = j * 100;
+		a[2] = k * 100;
+		for(int l = 0; l < 3; ++l) a[l] -= o[l];
+		double x, y;
+		x = - inner_product(a, r) / inner_product(a, p);
+		y = inner_product(a, q) / inner_product(a, p);
 		printf("%f %f\n", x, y);
-		printf("%d %d\n", (int)(x * 1000), (int)(y * 1000));
-		for(int j = x * 1000 + 495; j < x * 1000 + 505; ++j)
-			for(int k = y * 1000 + 495; k < y * 1000 + 505; ++k)
-				test.data[j][k] = fore;
+		for(int l = x * 500 + 498; l < x * 500 + 502; ++l)
+			for(int m = y * 500 + 498; m < y * 500 + 502; ++m)
+				test.data[l][m - 200] = fore;
 	}
 
+	o[0] = 480;
+	o[1] = 460;
+	o[2] = 300;
+	p[0] = -480;
+	p[1] = -460;
+	p[2] = -300;
+	q[0] = 4.6;
+	q[1] = -4.8;
+	q[2] = 0;
+	normalize(p);
+	normalize(q);
+
+	double r2[N] = {p[1] * q[2] - p[2] * q[1], p[2] * q[0] - p[0] * q[2], p[0] * q[1] - p[1] * q[0]};
+
+	for(int i = -2; i < 2; ++i) for(int j = -2; j < 2; ++j) for(int k = -2; k < 2; ++k){
+		a[0] = i * 100;
+		a[1] = j * 100;
+		a[2] = k * 100;
+		for(int l = 0; l < 3; ++l) a[l] -= o[l];
+		double x, y;
+		x = - inner_product(a, r2) / inner_product(a, p);
+		y = inner_product(a, q) / inner_product(a, p);
+		printf("%f %f\n", x, y);
+		for(int l = x * 500 + 498; l < x * 500 + 502; ++l)
+			for(int m = y * 500 + 498; m < y * 500 + 502; ++m)
+				test.data[l][m + 200] = fore;
+	}
 	
 	char out[] = "out.bmp";
 	WriteBmp(out, &test);
