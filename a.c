@@ -2,10 +2,11 @@
 #include "bmp.h"
 
 #define N 3
+#define abs(a) (a>0?a:-a)
 
 img test;
 
-color fore = {.r = 0xFF, .g = 0xFF, .b = 0xFF};
+color fore = {.r = 0xFF, .g = 0xFF, .b = 0xFF}, red = {.r = 0xFF, .g = 0, .b = 0}, blue = {.r = 0, .g = 0, .b = 0xFF};
 
 void normalize(double x[]){
 	double abs = 0;
@@ -34,7 +35,7 @@ int main(){
 
 	double a[N];
 
-	for(int i = -2; i < 2; ++i) for(int j = -2; j < 2; ++j) for(int k = -2; k < 2; ++k){
+	for(int i = -2; i < 3; ++i) for(int j = -2; j < 3; ++j) for(int k = -2; k < 3; ++k){
 		a[0] = i * 100;
 		a[1] = j * 100;
 		a[2] = k * 100;
@@ -45,7 +46,7 @@ int main(){
 		printf("%f %f\n", x, y);
 		for(int l = x * 500 + 498; l < x * 500 + 502; ++l)
 			for(int m = y * 500 + 498; m < y * 500 + 502; ++m)
-				test.data[l][m - 200] = fore;
+				test.data[l][m - 250] = ((i + j + k) % 2 ? red : blue);
 	}
 
 	o[0] = 480;
@@ -62,7 +63,7 @@ int main(){
 
 	double r2[N] = {p[1] * q[2] - p[2] * q[1], p[2] * q[0] - p[0] * q[2], p[0] * q[1] - p[1] * q[0]};
 
-	for(int i = -2; i < 2; ++i) for(int j = -2; j < 2; ++j) for(int k = -2; k < 2; ++k){
+	for(int i = -2; i < 3; ++i) for(int j = -2; j < 3; ++j) for(int k = -2; k < 3; ++k){
 		a[0] = i * 100;
 		a[1] = j * 100;
 		a[2] = k * 100;
@@ -73,7 +74,7 @@ int main(){
 		printf("%f %f\n", x, y);
 		for(int l = x * 500 + 498; l < x * 500 + 502; ++l)
 			for(int m = y * 500 + 498; m < y * 500 + 502; ++m)
-				test.data[l][m + 200] = fore;
+				test.data[l][m + 250] = ((i + j + k) % 2 ? red : blue);
 	}
 	
 	char out[] = "out.bmp";
